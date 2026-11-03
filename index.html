@@ -131,7 +131,7 @@ function result(){
  const picks=state.resultChoices.length?state.resultChoices:pickWorks(),org=organizationPortrait(),scope=scopeInsight();
  return `<section class="screen">
  <div class="section-kicker">第三幕 · 一份不那么神圣的回答</div>${stage('talking')}
- <div class="parchment marx-speech"><div class="speech-name">卡尔·马克思 <span>✦</span></div><div class="speech-text">“${safe(nameOf())}，我认真听完了。”\\n\\n“你问个人能做什么。这当然重要。可我更想问的是：个人的成果，究竟怎样才能成为大家共同拥有的能力？”</div></div>
+ <div class="parchment marx-speech"><div class="speech-name">卡尔·马克思 <span>✦</span></div><div class="speech-text">“${safe(nameOf())}，我认真听完了。”\n\n“你问个人能做什么。这当然重要。可我更想问的是：个人的成果，究竟怎样才能成为大家共同拥有的能力？”</div></div>
  <div class="panel"><h2 class="subheading">你的处境，不是一道选择题</h2><p>${safe(summaryLine())}</p><p class="small">${safe(envDescription('same'))}</p></div>
  <div class="panel org-panel"><div class="section-kicker">革命主体 · 发展的条件</div><h2 class="subheading">${safe(org.label)}</h2><p>${safe(org.desc)}</p><p class="small">这里只是对自述状况的初步描述，不是组织资格认证。理论中的松散小团体、稳定小团体、工作组以及更高发展阶段，不能仅凭两道题准确判定。</p></div>
  ${scope?`<div class="panel reflection-panel"><div class="section-kicker">值得检验的一个可能性</div><h2 class="subheading">${safe(scope.title)}</h2><p>${safe(scope.body)}</p><p class="small">这是反思性提示，不是对你能力或品格的判断。</p></div>`:''}
@@ -146,7 +146,7 @@ function graph(){
  const chosenOrg=state.orgWhatif==='same'?state.answers.group:state.orgWhatif;
  const groupDetail=state.orgWhatif==='same'?organizationPortrait():organizationPortrait(chosenOrg,'unknown');
  const map={
- position:['社会环境与个人条件',summaryLine()+' '+envDescription(state.whatif)],
+ position:['社会环境与个人条件',({low:'可稳定投入时间有限',mid:'有一些稳定时间',high:'有较充足时间',unstable:'时间不太稳定'}[state.answers.time]||'个人时间条件未知')+'。'+envDescription(state.whatif)],
  subject:['革命主体：'+groupDetail.label,groupDetail.desc],
  work:[work[1],collectiveMeaning(work,chosenOrg)],
  front:[work[3],`“${work[1]}”可能与这些战线相关，但不同工作的边界并非截然分开。`],
