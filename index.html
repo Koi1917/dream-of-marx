@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#261b1b">
 <meta name="description" content="一场关于革命组织学的古怪梦境：与粘土人偶马克思对话，转动黄铜选择器，在理论全景图中探索不同条件与实践的联系。">
-<title>梦见马克思 · 第一场梦 v0.2</title>
+<title>梦见马克思 · 第一场梦 v0.2.1</title>
 <style>
 :root{--ink:#25191a;--bg:#20191d;--garnet:#602d32;--wine:#4b272f;--wine2:#321f27;--brass:#cba367;--gold:#f1d49a;--metal:#755537;--paper:#edd9af;--paperdark:#d7b980;--copper:#8e6242;--text:#f5e8cf;--muted:#d7bea0;color-scheme:dark}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;min-height:100svh;color:var(--text);font-family:"Songti SC","STSong","Noto Serif CJK SC",Georgia,serif;line-height:1.56;background:radial-gradient(ellipse 70% 25% at 50% -7%,#95634b45,transparent 70%),linear-gradient(90deg,#180f17 0%,#29171d 9%,#382329 16%,#211a1e 25%,#261b20 75%,#382329 84%,#29171d 91%,#180f17 100%);overflow-x:hidden}body:before{content:"";pointer-events:none;position:fixed;inset:0;opacity:.3;background:repeating-linear-gradient(92deg,transparent 0 17px,#c4886520 18px 19px,transparent 20px 32px);z-index:0}body:after{content:"";position:fixed;inset:0;pointer-events:none;box-shadow:inset 0 0 110px #0907087a;z-index:4}
@@ -18,11 +18,16 @@ button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.43;curs
 @keyframes wheelArrive{0%{transform:perspective(400px) rotateX(-75deg) translateY(-34px);opacity:.18;filter:blur(2px)}65%{transform:perspective(400px) rotateX(9deg) translateY(5px);filter:blur(0)}100%{transform:perspective(400px) rotateX(0deg);opacity:1}}@keyframes reveal{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}@keyframes puppetBreathe{50%{transform:translateY(2px) rotate(.55deg)}}@keyframes puppetThink{to{transform:rotate(-1.2deg) translateY(1px)}}@keyframes puppetSpeak{50%{transform:rotate(1.4deg) translateY(-2px)}}@keyframes gearTurn{to{transform:rotate(360deg)}}
 @media(min-width:700px){.app-shell{max-width:540px;padding:13px 24px}.stage .puppet-frame{height:264px}.marx-speech{margin-inline:20px}}@media(max-width:375px){.app-shell{padding-inline:11px}.stage .puppet-frame{height:189px}.marx-speech{min-height:103px;margin:9px}.speech-text{font-size:.94rem}.wheel-button{width:37px;height:37px;font-size:1.1rem;border-width:3px}.brass-plate{font-size:.78rem}.selector-housing{padding-inline:6px}.big-title{font-size:2.6rem}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.org-panel{border-color:#cfb178;background:linear-gradient(150deg,#483126,#2b2424)}
+.reflection-panel{border:2px solid #d1ab65;background:linear-gradient(150deg,#48392c,#291f22)}
+.org-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.org-tabs button{flex:1 1 130px;min-width:0}
+.result-card p strong{color:#f5d49b}
 </style>
 </head>
 <body>
 <div class="app-shell">
-<header class="topbar"><div class="wordmark">✦ 梦见马克思 <span class="micro">V0.2</span></div><div class="top-actions"><button id="sound" class="round-control" aria-label="开启音效" title="开启音效">♫</button><button id="restart" class="round-control" aria-label="重新开始" title="重新开始">↺</button></div></header>
+<header class="topbar"><div class="wordmark">✦ 梦见马克思 <span class="micro">V0.2.1</span></div><div class="top-actions"><button id="sound" class="round-control" aria-label="开启音效" title="开启音效">♫</button><button id="restart" class="round-control" aria-label="重新开始" title="重新开始">↺</button></div></header>
 <main id="app" aria-live="polite"></main>
 </div>
 <script>
@@ -117,9 +122,51 @@ function scopeInsight(a=state.answers){
  if(tooMuch)return {title:'你是否把精力分得太散了？',body:`你列出了${skills.length}项能力和${interests.length}类想尝试的工作，又提到忙碌或疲惫。这不意味着能力太多是问题；但同时展开太多方向，是否正消耗你的时间？也可能另有生活负担，值得分开理解。`,speech:'且慢！你会的事情不少，想做的事情更多。（他掰着手指数了两遍。）我并不怀疑你的才能；可你是否正在让一个人承担几个人的工作？'};
  return {title:'做了很多，却没有留下多少？',body:`你列出了${skills.length}项能力和${interests.length}类想尝试的工作，同时觉得成果难以积累。可能是注意力过于分散，也可能是缺少保存、共同反馈与复用的机制。仅凭这些回答无法区分；我们先把问题列出来。`,speech:'有这么多本领和想法，却仍觉得成果留不下来？（他郑重地摆好了桌上的纸。）或许不是做得太少，而是事情太多，也可能是缺少让成果留下来的办法。'};
 }
-function summaryLine(){const time={low:'可稳定投入的时间有限',mid:'有一些稳定时间',high:'有较充足时间',unstable:'时间不太稳定'}[state.answers.time]||'时间条件尚不清楚';const group={alone:'主要独立探索',loose:'有零散联系',stable:'有较稳定的同伴',organised:'已有持续分工'}[state.answers.group]||'集体状态尚不清楚';return `据你所说，你目前${group}，${time}。这些条件会影响项目的规模和持续性，却不能替你决定什么工作最值得做。`}
-function result(){const picks=state.resultChoices.length?state.resultChoices:pickWorks();return `<section class="screen"><div class="section-kicker">第三幕 · 一份不那么神圣的回答</div>${stage('talking')}<div class="parchment marx-speech"><div class="speech-name">卡尔·马克思 <span>✦</span></div><div class="speech-text">“${safe(nameOf())}，我认真听完了。”\n\n“现在我可以告诉你三个可能的方向。不过，这可不是圣旨——如果我的建议不符合你的生活，请先怀疑我的建议。”</div></div><div class="panel"><h2 class="subheading">你的处境，不是一道选择题</h2><p>${safe(summaryLine())}</p><p class="small">${safe(envDescription('same'))}</p></div><div class="section-kicker">三个值得进一步探索的工作</div>${picks.map((w,i)=>`<div class="result-card"><div class="kicker">方向 ${String(i+1).padStart(2,'0')} · ${safe(w[2])}</div><h3>${safe(w[1])}</h3><p>可能的直接成果：${safe(w[4])}</p><p class="path">关联战线：${safe(w[3])}。成果能否形成长久能力，还取决于保存、共同理解、持续使用与反馈。</p></div>`).join('')}<div class="panel"><h3 style="margin:0 0 8px;color:#f5d49b">马克思最后的叮嘱</h3><p>“别把一种能力误当成必须履行的义务。我们谈的是条件与可能性，而不是给你分配命运。”</p></div><button class="primary-btn full" data-act="graph">梦醒，展开全景图 →</button>${footer()}<p class="miniremark">教学性示意分析；并非经验证的现实行动方案或政治风险评估。</p></section>`}
-function graph(){const work=state.resultChoices[0]||WORKS[0],map={position:['个人与集体条件',summaryLine()],work:[work[1],`这是可能的一种工作形式。它需要的能力、时间和协作条件，不能只由身份标签推断。`],front:[work[3],`“${work[1]}”可能与这些战线相关，但不同工作的边界并非截然分开。`],outcome:[work[4],`可能产生这样的直接成果；有活动不等于必定有成果。`],accum:['长期力量积累','成果只有经过保存、吸收、复用与集体协作，才可能逐渐变成较稳定的能力。']};return `<section class="screen"><div class="section-kicker">第四幕 · 机关背后的结构</div><h2 class="subheading center">革命实践关系图</h2><p class="small center">神殿像纸板舞台一样折叠起来。人偶的脚步声渐渐消失。留下来的，是可以被拆开研究的关系。</p><div class="panel"><div class="graph">${Object.entries(map).map(([key,v],i)=>`${i?'<div class="graph-line"></div>':''}<button data-node="${key}" class="${state.detail===key?'on':''}"><strong>${safe(v[0])}</strong><small>${safe(['主体与条件','工作','战线','直接成果','持续积累'][i])}</small></button>`).join('')}</div><div class="detail" aria-live="polite">${safe(map[state.detail]?.[1]||map.work[1])}</div></div><div class="section-kicker">假如只改变社会环境……</div><p class="small">其他回答不变，只切换一个概括的环境条件，比较解释如何变化。</p><div class="compare-tabs"><button data-whatif="same" class="${state.whatif==='same'?'on':''}">你的原始回答</button><button data-whatif="open" class="${state.whatif==='open'?'on':''}">假想：表达空间更广</button><button data-whatif="restrict" class="${state.whatif==='restrict'?'on':''}">假想：限制更严格</button></div><div class="detail" aria-live="polite">${safe(envDescription(state.whatif))}</div><p class="footnote" style="margin-top:15px">这是帮助理解理论关系的反事实对照，不能代替具体社会研究或风险判断。</p><button class="secondary-btn full" data-act="result">回看导师建议</button><button class="primary-btn full" data-act="restart">带着问题，再做一场梦 ↺</button><p class="center small" style="margin:24px 0 12px">接下来，该由你自己观察现实了。</p></section>`}
+function summaryLine(){
+ const time={low:'可稳定投入的时间有限',mid:'有一些稳定时间',high:'有较充足时间',unstable:'时间不太稳定'}[state.answers.time]||'时间条件尚不清楚';
+ const org=organizationPortrait();
+ return `据你所说，你目前${org.label}，${time}。这两类条件会影响同一工作的意义，但无法自动决定你应该做什么。`;
+}
+function result(){
+ const picks=state.resultChoices.length?state.resultChoices:pickWorks(),org=organizationPortrait(),scope=scopeInsight();
+ return `<section class="screen">
+ <div class="section-kicker">第三幕 · 一份不那么神圣的回答</div>${stage('talking')}
+ <div class="parchment marx-speech"><div class="speech-name">卡尔·马克思 <span>✦</span></div><div class="speech-text">“${safe(nameOf())}，我认真听完了。”\\n\\n“你问个人能做什么。这当然重要。可我更想问的是：个人的成果，究竟怎样才能成为大家共同拥有的能力？”</div></div>
+ <div class="panel"><h2 class="subheading">你的处境，不是一道选择题</h2><p>${safe(summaryLine())}</p><p class="small">${safe(envDescription('same'))}</p></div>
+ <div class="panel org-panel"><div class="section-kicker">革命主体 · 发展的条件</div><h2 class="subheading">${safe(org.label)}</h2><p>${safe(org.desc)}</p><p class="small">这里只是对自述状况的初步描述，不是组织资格认证。理论中的松散小团体、稳定小团体、工作组以及更高发展阶段，不能仅凭两道题准确判定。</p></div>
+ ${scope?`<div class="panel reflection-panel"><div class="section-kicker">值得检验的一个可能性</div><h2 class="subheading">${safe(scope.title)}</h2><p>${safe(scope.body)}</p><p class="small">这是反思性提示，不是对你能力或品格的判断。</p></div>`:''}
+ <div class="section-kicker">三个值得进一步探索的工作</div>
+ ${picks.map((w,i)=>`<div class="result-card"><div class="kicker">方向 ${String(i+1).padStart(2,'0')} · ${safe(w[2])}</div><h3>${safe(w[1])}</h3><p>可能的直接成果：${safe(w[4])}</p><p class="path">关联战线：${safe(w[3])}。</p><p class="path"><strong>与主体发展有什么关系？</strong> ${safe(collectiveMeaning(w))}</p></div>`).join('')}
+ <div class="panel"><h3 style="margin:0 0 8px;color:#f5d49b">马克思最后的叮嘱</h3><p>“别把一种能力误当成必须履行的义务。一份成果和一个持续的共同事业，也不是同一回事。我们还得研究它们之间的联系。”</p></div>
+ <button class="primary-btn full" data-act="graph">梦醒，展开全景图 →</button>${footer()}
+ <p class="miniremark">教育性示意分析；不是经验证的现实行动方案、组织认定或政治风险评估。</p></section>`;
+}
+function graph(){
+ const work=state.resultChoices[0]||WORKS[0];
+ const chosenOrg=state.orgWhatif==='same'?state.answers.group:state.orgWhatif;
+ const groupDetail=state.orgWhatif==='same'?organizationPortrait():organizationPortrait(chosenOrg,'unknown');
+ const map={
+ position:['社会环境与个人条件',summaryLine()+' '+envDescription(state.whatif)],
+ subject:['革命主体：'+groupDetail.label,groupDetail.desc],
+ work:[work[1],collectiveMeaning(work,chosenOrg)],
+ front:[work[3],`“${work[1]}”可能与这些战线相关，但不同工作的边界并非截然分开。`],
+ outcome:[work[4],`可能产生这样的直接成果；有活动不等于必定有成果。`],
+ accum:['长期力量积累','成果只有经过保存、吸收、复用、共同评价和持续协作，才可能逐渐成为较稳定的集体能力。']
+ };
+ return `<section class="screen"><div class="section-kicker">第四幕 · 机关背后的结构</div><h2 class="subheading center">革命实践关系图</h2>
+ <p class="small center">神殿像纸板舞台一样折叠起来。人偶的脚步声渐渐消失。留下来的，是可以被拆开研究的关系。</p>
+ <div class="panel"><div class="graph">${Object.entries(map).map(([key,v],i)=>`${i?'<div class="graph-line"></div>':''}<button data-node="${key}" class="${state.detail===key?'on':''}"><strong>${safe(v[0])}</strong><small>${safe(['条件','革命主体','工作','战线','直接成果','持续积累'][i])}</small></button>`).join('')}</div><div class="detail" aria-live="polite">${safe(map[state.detail]?.[1]||map.work[1])}</div></div>
+ <div class="section-kicker">假如只改变集体的发展状况……</div>
+ <p class="small">保留同一份工作和个人能力，尝试比较“个人成果怎样可能变成共同能力”。</p>
+ <div class="compare-tabs org-tabs"><button data-orgwhatif="same" class="${state.orgWhatif==='same'?'on':''}">你的原始回答</button><button data-orgwhatif="alone" class="${state.orgWhatif==='alone'?'on':''}">个人探索</button><button data-orgwhatif="loose" class="${state.orgWhatif==='loose'?'on':''}">松散联系</button><button data-orgwhatif="stable" class="${state.orgWhatif==='stable'?'on':''}">稳定小团体</button><button data-orgwhatif="organised" class="${state.orgWhatif==='organised'?'on':''}">有分工的工作集体</button></div>
+ <div class="detail" aria-live="polite"><strong>${safe(groupDetail.label)}</strong>：${safe(collectiveMeaning(work,chosenOrg))}</div>
+ <p class="small">理论发展序列（非自动晋级）：松散小团体 → 稳定小团体 → 工作组 → 准先锋队 → 先锋队。后两阶段不根据这次简短问答判定；集体发展也不保证线性前进。</p>
+ <div class="section-kicker">假如只改变社会环境……</div><p class="small">其他回答不变，比较解释如何变化。</p>
+ <div class="compare-tabs"><button data-whatif="same" class="${state.whatif==='same'?'on':''}">原始环境</button><button data-whatif="open" class="${state.whatif==='open'?'on':''}">假想：表达空间更广</button><button data-whatif="restrict" class="${state.whatif==='restrict'?'on':''}">假想：限制更严格</button></div><div class="detail" aria-live="polite">${safe(envDescription(state.whatif))}</div>
+ <p class="footnote" style="margin-top:15px">这些是比较理论关系的假设条件，不是现实中的行动指令或安全判断。</p>
+ <button class="secondary-btn full" data-act="result">回看导师建议</button><button class="primary-btn full" data-act="restart">带着问题，再做一场梦 ↺</button>
+ <p class="center small" style="margin:24px 0 12px">接下来，该由你自己观察现实了。</p></section>`;
+}
 function draw(){app.innerHTML=state.screen==='home'?home():state.screen==='avatar'?avatarScreen():state.screen==='intro'?intro():state.screen==='question'?qScreen():state.screen==='result'?result():graph();if(state.screen==='avatar')installSketch()}
 function baseSketch(){const c=document.getElementById('sketch');if(!c)return;const x=c.getContext('2d');x.fillStyle='#ead7b1';x.fillRect(0,0,300,300);x.strokeStyle='#927656';x.lineWidth=1;x.strokeRect(7,7,286,286);x.strokeStyle='#413329';x.lineWidth=4;x.lineCap='round';x.beginPath();x.arc(150,66,32,0,Math.PI*2);x.moveTo(150,98);x.lineTo(150,195);x.moveTo(150,130);x.lineTo(95,168);x.moveTo(150,130);x.lineTo(205,168);x.moveTo(150,195);x.lineTo(110,270);x.moveTo(150,195);x.lineTo(193,270);x.stroke();x.fillStyle='#776247';x.font='12px Georgia';x.fillText('自画像 · 无论如何都像你',50,21)}
 function installSketch(){const c=document.getElementById('sketch'),ctx=c.getContext('2d');if(state.sketch){const im=new Image;im.onload=()=>ctx.drawImage(im,0,0);im.src=state.sketch}else{baseSketch();state.sketch=c.toDataURL('image/png')}let touching=false,last=null;const undo=[];const point=e=>{const b=c.getBoundingClientRect();return{x:(e.clientX-b.left)*300/b.width,y:(e.clientY-b.top)*300/b.height}};c.addEventListener('pointerdown',e=>{touching=true;undo.push(c.toDataURL('image/png'));if(undo.length>30)undo.shift();c.setPointerCapture(e.pointerId);last=point(e);ctx.beginPath();ctx.fillStyle=state.color;ctx.arc(last.x,last.y,state.brush/2,0,2*Math.PI);ctx.fill()});c.addEventListener('pointermove',e=>{if(!touching)return;const p=point(e);ctx.strokeStyle=state.color;ctx.lineWidth=state.brush;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p});for(const type of ['pointerup','pointercancel','lostpointercapture'])c.addEventListener(type,()=>{if(touching){touching=false;state.sketch=c.toDataURL('image/png')}});state.undoSketch=()=>{const last=undo.pop();if(!last)return;const im=new Image;im.onload=()=>{ctx.clearRect(0,0,300,300);ctx.drawImage(im,0,0);state.sketch=c.toDataURL('image/png')};im.src=last}}
@@ -130,9 +177,10 @@ const cat=e.target.closest('[data-category]');if(cat){state.category=cat.dataset
 const rr=e.target.closest('[data-rot]');if(rr){rotate(Number(rr.dataset.rot));return}
 const opt=e.target.closest('[data-opt]');if(opt){if(state.rolling)return;const q=Q[state.q];if(!q.multi){answer(opt.dataset.opt);return}answer(opt.dataset.opt);return}
 const node=e.target.closest('[data-node]');if(node){state.detail=node.dataset.node;draw();return}
+const ow=e.target.closest('[data-orgwhatif]');if(ow){state.orgWhatif=ow.dataset.orgwhatif;draw();sound();return}
 const wt=e.target.closest('[data-whatif]');if(wt){state.whatif=wt.dataset.whatif;draw();sound();return}
 const b=e.target.closest('[data-act]');if(!b)return;
-switch(b.dataset.act){case'avatar':setScreen('avatar');break;case'finishAvatar':{const c=document.getElementById('sketch');if(c)state.avatar=c.toDataURL('image/png');const dest=state.returnTo||'intro';state.returnTo=null;setScreen(dest);sound('bell');break}case'skipAvatar':{const dest=state.returnTo||'intro';state.returnTo=null;setScreen(dest);break}case'begin':state.animateEnter=true;setScreen('question');sound();setTimeout(()=>{state.animateEnter=false},reduced()?1:600);break;case'advance':next();break;case'confirmMulti':finishMulti();break;case'skipMulti':state.selectedMulti[Q[state.q].key]=[];finishMulti(true);break;case'edit':state.returnTo=state.screen;setScreen('avatar');break;case'undo':state.undoSketch?.();break;case'erase':state.color='#ead7b1';document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active'));break;case'resetSketch':{const c=document.getElementById('sketch');baseSketch();state.sketch=c.toDataURL('image/png');break}case'graph':state.detail='work';state.whatif='same';setScreen('graph');sound('bell');break;case'result':setScreen('result');break;case'restart':state.q=0;state.answers={};state.selectedMulti={};state.replyReady=false;state.category='all';state.cursor=0;state.resultChoices=[];setScreen('home');break;}
+switch(b.dataset.act){case'avatar':setScreen('avatar');break;case'finishAvatar':{const c=document.getElementById('sketch');if(c)state.avatar=c.toDataURL('image/png');const dest=state.returnTo||'intro';state.returnTo=null;setScreen(dest);sound('bell');break}case'skipAvatar':{const dest=state.returnTo||'intro';state.returnTo=null;setScreen(dest);break}case'begin':state.animateEnter=true;setScreen('question');sound();setTimeout(()=>{state.animateEnter=false},reduced()?1:600);break;case'advance':next();break;case'confirmMulti':finishMulti();break;case'skipMulti':state.selectedMulti[Q[state.q].key]=[];finishMulti(true);break;case'edit':state.returnTo=state.screen;setScreen('avatar');break;case'undo':state.undoSketch?.();break;case'erase':state.color='#ead7b1';document.querySelectorAll('.swatch').forEach(x=>x.classList.remove('active'));break;case'resetSketch':{const c=document.getElementById('sketch');baseSketch();state.sketch=c.toDataURL('image/png');break}case'graph':state.detail='subject';state.whatif='same';state.orgWhatif='same';setScreen('graph');sound('bell');break;case'result':setScreen('result');break;case'restart':state.q=0;state.answers={};state.selectedMulti={};state.replyReady=false;state.category='all';state.cursor=0;state.resultChoices=[];setScreen('home');break;}
 });
 document.getElementById('sound').addEventListener('click',e=>{state.sound=!state.sound;e.currentTarget.textContent=state.sound?'♪':'♫';e.currentTarget.setAttribute('aria-label',state.sound?'关闭音效':'开启音效');if(state.sound)sound('bell')});
 document.getElementById('restart').addEventListener('click',()=>{state.q=0;state.answers={};state.selectedMulti={};state.replyReady=false;state.category='all';state.cursor=0;state.resultChoices=[];setScreen('home')});
